@@ -18,13 +18,15 @@ interface BackupData {
   drafts: unknown[]
 }
 
-function blobToBase64(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(blob)
-  })
+async function blobToBase64(blob: Blob): Promise<string> {
+  // 不依赖 FileReader（Node 测试环境与部分老 WebView 不可用），分块编码避免栈溢出
+  const buf = new Uint8Array(await blob.arrayBuffer())
+  let bin = ''
+  const chunk = 0x8000
+  for (let i = 0; i < buf.length; i += chunk) {
+    bin += String.fromCharCode(...buf.subarray(i, i + chunk))
+  }
+  return `data:${blob.type || 'image/jpeg'};base64,${btoa(bin)}`
 }
 
 function base64ToBlob(dataUrl: string): Blob {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { questionRepo, reviewRepo, paperRepo, today } from '../db/repo'
@@ -77,7 +77,7 @@ export function Stats() {
   const [range, setRange] = useState<7 | 30>(7)
   const navigate = useNavigate()
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     if (!user) return
     questionRepo.list(user.id).then(setQuestions)
     questionRepo.list(user.id, { includeDeleted: true })
@@ -85,6 +85,22 @@ export function Stats() {
     reviewRepo.byUser(user.id).then(setReviews)
     paperRepo.listByUser(user.id).then(setPapers)
   }, [user])
+
+  useEffect(() => { load() }, [load])
+
+  /** 诊断动作：把一批题的 nextReviewAt 提前到今天（召回 / 加入复习） */
+  async function recall(list: Question[], label: string) {
+    if (list.length === 0) return
+    const t = today()
+    for (const q of list) {
+      q.nextReviewAt = t
+      q.updatedAt = new Date().toISOString()
+      await questionRepo.put(q)
+    }
+    alert(`已将 ${list.length} 题加入今日复习队列`)
+    load()
+    void label
+  }
 
   const stats = useMemo(() => {
     const learning = questions.filter((q) => q.status === 'learning').length
@@ -479,7 +495,9 @@ export function Stats() {
           <div className="diag-block warn">
             <div className="diag-head">
               <b>逾期未复习</b><span className="diag-count">{stats.overdue.length} 题</span>
-              <button className="btn-ghost small" onClick={() => navigate('/study')}>一键进入复习</button>
+              <button className="btn-ghost small" onClick={() => navigate('/review/session', { state: { freeIds: stats.overdue.map((o) => o.q.id), free: true } })}>
+                一键复习这 {stats.overdue.length} 题
+              </button>
             </div>
             <ul className="diag-list">
               {stats.overdue.slice(0, 5).map(({ q, days }) => (
@@ -516,6 +534,9 @@ export function Stats() {
           <details className="diag-item">
             <summary>长期沉睡题 <b>{stats.sleeping.length}</b></summary>
             <p className="muted small">上次复习距今超过 30 天，建议召回</p>
+            {stats.sleeping.length > 0 && (
+              <button className="btn-ghost small" onClick={() => recall(stats.sleeping, '沉睡召回')}>🔔 一键召回（加入今日复习）</button>
+            )}
             <ul className="diag-list">
               {stats.sleeping.slice(0, 8).map((q) => (
                 <li key={q.id} onClick={() => navigate(`/questions/${q.id}`)}>
@@ -528,6 +549,9 @@ export function Stats() {
           <details className="diag-item">
             <summary>零复习题 <b>{stats.neverReviewed.length}</b></summary>
             <p className="muted small">入库超过 7 天仍从未复习——「收题不收心」提醒</p>
+            {stats.neverReviewed.length > 0 && (
+              <button className="btn-ghost small" onClick={() => recall(stats.neverReviewed, '零复习激活')}>🔔 加入今日复习</button>
+            )}
             <ul className="diag-list">
               {stats.neverReviewed.slice(0, 8).map((q) => (
                 <li key={q.id} onClick={() => navigate(`/questions/${q.id}`)}>
@@ -552,6 +576,9 @@ export function Stats() {
           <details className="diag-item">
             <summary>冷题（未进过练习卷）<b>{stats.coldQuestions.length}</b></summary>
             <p className="muted small">从未被任何练习卷引用，组卷覆盖度 {questions.length > 0 ? Math.round(((questions.length - stats.coldQuestions.length) / questions.length) * 100) : 0}%</p>
+            {stats.coldQuestions.length > 0 && (
+              <button className="btn-ghost small" onClick={() => navigate('/study?tab=papers')}>📄 去组卷覆盖它们</button>
+            )}
           </details>
         </div>
 

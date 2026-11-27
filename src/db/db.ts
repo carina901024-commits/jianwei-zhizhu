@@ -117,6 +117,11 @@ export async function seedDB(): Promise<void> {
   }
 }
 
+/** 仅测试使用：重置连接缓存（配合 fake-indexeddb 每个用例独立数据库） */
+export function __resetDBForTest(): void {
+  dbPromise = null
+}
+
 export function newId(): string {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID()
   return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
