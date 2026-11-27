@@ -6,11 +6,11 @@ import { Home } from './pages/Home'
 import { Capture } from './pages/Capture'
 import { CropEditor } from './pages/CropEditor'
 import { QuestionDetail } from './pages/QuestionDetail'
-import { ReviewHome } from './pages/ReviewHome'
+import { Study } from './pages/Study'
 import { ReviewSession } from './pages/ReviewSession'
-import { Papers } from './pages/Papers'
 import { PapersNew } from './pages/PapersNew'
 import { PaperPreview } from './pages/PaperPreview'
+import { Stats } from './pages/Stats'
 import { Settings } from './pages/Settings'
 import { Guide } from './pages/Guide'
 
@@ -39,11 +39,13 @@ export default function App() {
         <Route path="/crop" element={<CropEditor />} />
         <Route path="/editor" element={<EditorRedirect />} />
         <Route path="/questions/:id" element={<QuestionDetail />} />
-        <Route path="/review" element={<ReviewHome />} />
+        <Route path="/study" element={<Study />} />
+        <Route path="/review" element={<Navigate to="/study" replace />} />
         <Route path="/review/session" element={<ReviewSession />} />
-        <Route path="/papers" element={<Papers />} />
+        <Route path="/papers" element={<Navigate to="/study?tab=papers" replace />} />
         <Route path="/papers/new" element={<PapersNew />} />
         <Route path="/papers/:id/preview" element={<PaperPreview />} />
+        <Route path="/stats" element={<Stats />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/guide" element={<Guide />} />
         <Route path="*" element={<Navigate to="/" replace />} />

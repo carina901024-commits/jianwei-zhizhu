@@ -212,6 +212,9 @@ export const questionRepo = {
 
 // ---------- reviews ----------
 export const reviewRepo = {
+  async byUser(userId: ID): Promise<Review[]> {
+    return (await getDB()).getAllFromIndex('reviews', 'by-user', userId)
+  },
   async byQuestion(questionId: ID): Promise<Review[]> {
     const list = await (await getDB()).getAllFromIndex('reviews', 'by-question', questionId)
     return list.sort((a, b) => (a.reviewedAt < b.reviewedAt ? 1 : -1))

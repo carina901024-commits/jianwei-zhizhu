@@ -635,6 +635,57 @@ img { display: block; }
   border-radius: var(--radius-sm); font-size: 13.5px;
 }
 
+/* ===== 复习练习合并 Tab：分段切换 ===== */
+.seg-tabs {
+  display: flex; background: var(--bg2); border: 1px solid var(--rule);
+  border-radius: 12px; padding: 4px; margin: 4px 0 12px;
+}
+.seg-tab {
+  flex: 1; padding: 9px; border-radius: 8px;
+  font-weight: 600; font-size: 14px; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.seg-tab.active { background: var(--accent); color: #fff; }
+
+/* ===== 统计页 ===== */
+.stat-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+.stat-tile {
+  background: var(--bg); border: 1px solid var(--rule);
+  border-radius: var(--radius-sm); padding: 12px 6px; text-align: center;
+}
+.stat-tile b { font-size: 22px; color: var(--accent-strong); display: block; line-height: 1.2; }
+.stat-tile b.c-learning { color: var(--accent-2); }
+.stat-tile b.c-mastered { color: var(--accent); }
+.stat-tile span { font-size: 11px; color: var(--muted); }
+
+.bar-list { display: flex; flex-direction: column; gap: 9px; margin: 8px 0 12px; }
+.bar-row { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.bar-label {
+  width: 76px; display: flex; align-items: center; gap: 5px;
+  color: var(--ink-soft); flex-shrink: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.bar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.bar-track {
+  flex: 1; height: 12px; background: var(--bg);
+  border-radius: 0 4px 4px 0; position: relative; overflow: hidden;
+}
+.bar-fill { height: 100%; border-radius: 0 4px 4px 0; min-width: 3px; display: block; }
+.bar-val { width: 34px; text-align: right; color: var(--ink); font-weight: 600; font-size: 12.5px; flex-shrink: 0; }
+
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--ink-soft); margin: 6px 0 2px; }
+.legend .bar-dot { width: 9px; height: 9px; }
+.trend-chart { display: flex; align-items: flex-end; gap: 6px; height: 118px; margin: 6px 0 2px; }
+.trend-col { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; }
+.trend-bars { display: flex; align-items: flex-end; gap: 2px; height: 84px; }
+.trend-bar { width: 12px; border-radius: 3px 3px 0 0; display: block; }
+.trend-val { font-size: 10px; color: var(--muted); height: 14px; white-space: nowrap; }
+.trend-day { font-size: 10.5px; color: var(--muted); margin-top: 6px; }
+
+@media (max-width: 380px) {
+  .stat-tiles { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===== 指南页 ===== */
 .guide-steps { margin: 8px 0 0; padding-left: 20px; font-size: 14px; color: var(--ink-soft); }
 .guide-steps li { margin: 6px 0; }

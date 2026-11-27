@@ -1,14 +1,14 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { BookOpen, BrainCircuit, FileText, Settings2, ChevronLeft, Camera } from 'lucide-react'
+import { BookOpen, BrainCircuit, BarChart3, Settings2, ChevronLeft, Camera } from 'lucide-react'
 import { useAppStore } from '../store/appStore'
 
 // 响应式布局：
-// - 移动端（<900px）：顶栏 + 底部四 Tab
+// - 移动端（<900px）：顶栏 + 底部四 Tab（错题本 / 复习练习 / 统计 / 我的）
 // - PC / iPad（≥900px）：左侧栏导航
 const TAB_ITEMS = [
   { to: '/', label: '错题本', icon: BookOpen },
-  { to: '/review', label: '复习', icon: BrainCircuit },
-  { to: '/papers', label: '练习卷', icon: FileText },
+  { to: '/study', label: '复习练习', icon: BrainCircuit },
+  { to: '/stats', label: '统计', icon: BarChart3 },
   { to: '/settings', label: '我的', icon: Settings2 },
 ]
 
@@ -17,7 +17,7 @@ const HIDE_TABS = ['/crop', '/editor', '/review/session']
 export function AppLayout() {
   const { user } = useAppStore()
   const location = useLocation()
-  const isRootTab = ['/', '/review', '/papers', '/settings', '/guide', '/capture', '/papers/new'].some(
+  const isRootTab = ['/', '/review', '/papers', '/study', '/stats', '/settings', '/guide', '/capture', '/papers/new'].some(
     (p) => location.pathname === p,
   )
   const hideBottom = HIDE_TABS.includes(location.pathname) || location.pathname.includes('/preview')
@@ -82,6 +82,8 @@ function titleFor(path: string): string {
     ['/crop', '框选加工'],
     ['/review/session', '复习作答'],
     ['/papers/new', '制作练习卷'],
+    ['/study', '复习 · 练习'],
+    ['/stats', '学习统计'],
     ['/guide', '使用指南'],
   ]
   const hit = map.find(([p]) => path.startsWith(p))
