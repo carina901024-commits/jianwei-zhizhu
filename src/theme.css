@@ -685,6 +685,99 @@ img { display: block; }
 @media (max-width: 380px) {
   .stat-tiles { grid-template-columns: repeat(2, 1fr); }
 }
+.stat-tiles.tiles-2 { grid-template-columns: repeat(2, 1fr); }
+.stat-tile b.c-due { color: var(--danger); }
+
+/* 概览：掌握率 */
+.mastery-block { margin: 12px 0; }
+.mastery-left { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+.mastery-pct { font-size: 34px; font-weight: 800; color: var(--accent); line-height: 1; }
+.mastery-pct em { font-style: normal; font-size: 16px; font-weight: 600; }
+.mastery-bar {
+  height: 10px; background: var(--bg);
+  border-radius: 0 5px 5px 0; overflow: hidden;
+}
+.mastery-bar > div { height: 100%; background: var(--accent); border-radius: 0 5px 5px 0; transition: width .3s; }
+
+/* 概览：本周新增 */
+.week-strip {
+  display: flex; align-items: baseline; gap: 10px;
+  background: var(--bg); border-radius: var(--radius-sm);
+  padding: 10px 12px; margin: 10px 0; font-size: 13.5px;
+}
+.week-strip b { font-size: 22px; color: var(--accent-strong); }
+.week-arrow.up { color: var(--accent-2); font-size: 12.5px; }
+.week-arrow.down { color: var(--accent); font-size: 12.5px; }
+
+/* 概览：环形图 */
+.donut-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+.donut-card {
+  background: var(--bg); border-radius: var(--radius-sm);
+  padding: 10px 8px; display: flex; flex-direction: column; align-items: center;
+}
+.donut-legend { display: flex; flex-direction: column; gap: 3px; margin-top: 6px; font-size: 12px; color: var(--ink-soft); }
+.donut-legend span { display: flex; align-items: center; gap: 5px; }
+.donut-legend b { color: var(--ink); }
+
+/* 分类排名条目 */
+.bar-label.rank em {
+  font-style: normal; font-weight: 700; font-size: 11px;
+  background: var(--accent-soft); color: var(--accent-strong);
+  width: 16px; height: 16px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-right: 5px; flex-shrink: 0;
+}
+.bar-label.rank em.weak-flag, .weak-flag {
+  background: #fef3c7; color: #92400e;
+}
+.bar-label .weak-flag {
+  font-style: normal; font-weight: 800; font-size: 11px;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-right: 5px; flex-shrink: 0;
+}
+
+/* 趋势：范围切换 */
+.range-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 4px;
+}
+.range-tabs { display: inline-flex; gap: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+.range-tab { padding: 4px 12px; font-size: 12px; color: var(--muted); background: var(--bg2); }
+.range-tab.active { background: var(--accent); color: #fff; font-weight: 600; }
+
+/* 诊断层 */
+.diag-block { border: 1px solid var(--rule); border-radius: var(--radius-sm); padding: 10px 12px; margin: 10px 0; }
+.diag-block.warn { border-color: #f59e0b; background: #fffbeb; }
+.diag-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.diag-head b { font-size: 14px; color: var(--ink); }
+.diag-head .btn-ghost { margin-left: auto; }
+.diag-count { font-size: 12px; color: var(--muted); }
+.diag-list { list-style: none; margin: 8px 0 0; padding: 0; }
+.diag-list li {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 7px 4px; border-bottom: 1px dashed var(--rule);
+  cursor: pointer; font-size: 13px;
+}
+.diag-list li:last-child { border-bottom: none; }
+.diag-list li:hover { background: var(--accent-soft); }
+.diag-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.diag-meta { flex-shrink: 0; color: var(--muted); font-size: 12px; }
+.diag-meta.bad { color: var(--danger); }
+.diag-tiles { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.diag-item {
+  border: 1px solid var(--rule); border-radius: var(--radius-sm);
+  padding: 10px 12px; background: var(--bg2);
+}
+.diag-item summary {
+  cursor: pointer; font-size: 13.5px; display: flex; align-items: center; gap: 8px;
+  list-style: none;
+}
+.diag-item summary::-webkit-details-marker { display: none; }
+.diag-item summary::after { content: '▸'; margin-left: auto; color: var(--muted); }
+.diag-item[open] summary::after { content: '▾'; }
+.diag-item summary b { color: var(--accent-strong); }
+.diag-item .diag-list { margin-top: 6px; }
 
 /* ===== 指南页 ===== */
 .guide-steps { margin: 8px 0 0; padding-left: 20px; font-size: 14px; color: var(--ink-soft); }
